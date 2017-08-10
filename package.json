@@ -1,5 +1,5 @@
 {
-  "name": "@npm/io",
+  "name": "@fedor/io",
   "version": "1.0.0",
   "description": "generic io toolchain both for browser and node",
   "main": "dist/io.min.js",
