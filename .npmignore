@@ -59,4 +59,13 @@ typings/
 # dotenv environment variables file
 .env
 test
-
+.idea
+/.npmignore
+/.editorconfig
+/.gitignore
+/.eslintrc.json
+/karma.conf.js
+/webpack.config.js
+/yarn.lock
+/package-lock.json
+/.babelrc
