@@ -53,6 +53,24 @@ io.get('/user',
     emulateJSON:false
   });
 ```
+## response
+response data is formatted as
+```js
+{
+  code:0,
+  data:"data from server"
+  message:"message from server"
+}
+```
+response error is formatted as
+```js
+{
+  code:"error code",
+  data:"error data from server",
+  message:"error message from server",
+  $:axios throw error
+}
+```
 
 ## config
 see <https://github.com/mzabriskie/axios#request-config>
