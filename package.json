@@ -1,6 +1,6 @@
 {
-  "name": "@npm/io",
-  "version": "1.0.0",
+  "name": "@fedor/io",
+  "version": "1.0.1",
   "description": "generic io toolchain both for browser and node",
   "main": "dist/io.min.js",
   "author": "ljw <leijiawang@analysys.com.cn>",

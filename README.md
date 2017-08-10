@@ -7,7 +7,7 @@ Promise based HTTP client for the browser and node.js wrapper axios and add json
 Using npm:
 
 ```bash
-$ npm install @npm/io
+$ npm install @fedor/io
 ```
 
 ## Test
