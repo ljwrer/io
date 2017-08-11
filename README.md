@@ -29,28 +29,33 @@ Performing a request
 
 ```js
 io[method](url,data,success,fail,config)
-io.get('/user',
+io.get(
+  // request url
+  '/user',
   // optional request query data or request data
   {ID: 12345},
+  //handle business success
   function (data) {
-    //handle business success
     console.log(data);
-  }, function (error) {
-    //handle business fail when code is not false value or server error
+  },
+  //handle business fail when code is not false value or server error
+  function (error) {
     console.log(error)
+  },
+  //extra config  or axios config
+  {
+    // use application/json with modern api
+    emulateJSON:false
   })
+  //handle success in promise
   .then(function (data) {
-    //handle success in promise
     console.log(data);
   })
+  //handle error in promise
   .catch(function (error) {
-    //handle error in promise
     console.log(error);
     //error.$ is origin error throw by axios
     console.log(error.$);
-  },{
-    // use application/json with modern api
-    emulateJSON:false
   });
 ```
 ## response
@@ -87,7 +92,7 @@ see <https://github.com/mzabriskie/axios#request-config>
 //the axios instance is in io.fetch and origin axios is in io.axios
 //if you want to use interceptors
 // request interceptor
-io.fetch.interceptors.request.use(function (config) {
+io.interceptors.request.use(function (config) {
     // Do something before request is sent
     return config;
   }, function (error) {
@@ -96,7 +101,7 @@ io.fetch.interceptors.request.use(function (config) {
   });
 
 // response interceptor
-io.fetch.interceptors.response.use(function (response) {
+io.interceptors.response.use(function (response) {
     // Do something with response data
     return response;
   }, function (error) {
