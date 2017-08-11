@@ -14,17 +14,17 @@ describe('#interceptors', function () {
     })
   })
   it('should trigger interceptors when success', function (done) {
-    io.fetch.interceptors.request.use(req, errorHandle)
-    io.fetch.interceptors.response.use(res, errorHandle)
-    io.get('/hero', success, fail).then(function (data) {
+    io.interceptors.request.use(req, errorHandle)
+    io.interceptors.response.use(res, errorHandle)
+    io.get('/hero', success, fail).then(function () {
       sinon.assert.calledOnce(req)
       sinon.assert.calledOnce(res)
       done()
     })
   })
   it('should trigger interceptors when error', function (done) {
-    io.fetch.interceptors.request.use(req, errorHandle)
-    io.fetch.interceptors.response.use(res, errorHandle)
+    io.interceptors.request.use(req, errorHandle)
+    io.interceptors.response.use(res, errorHandle)
     io.get('/server/error/standard', success, fail).catch(function () {
       sinon.assert.calledOnce(req)
       sinon.assert.calledOnce(errorHandle)
