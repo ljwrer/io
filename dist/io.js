@@ -7,7 +7,7 @@
 		exports["io"] = factory(require("lodash"));
 	else
 		root["io"] = factory(root["_"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_32__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_30__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -81,7 +81,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 var bind = __webpack_require__(2);
-var isBuffer = __webpack_require__(16);
+var isBuffer = __webpack_require__(14);
 
 /*global toString:true*/
 
@@ -391,7 +391,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(0);
-var normalizeHeaderName = __webpack_require__(18);
+var normalizeHeaderName = __webpack_require__(16);
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -699,12 +699,12 @@ process.umask = function() { return 0; };
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(0);
-var settle = __webpack_require__(19);
+var settle = __webpack_require__(17);
 var buildURL = __webpack_require__(6);
-var parseHeaders = __webpack_require__(21);
-var isURLSameOrigin = __webpack_require__(22);
+var parseHeaders = __webpack_require__(19);
+var isURLSameOrigin = __webpack_require__(20);
 var createError = __webpack_require__(5);
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(23);
+var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(21);
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -801,7 +801,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(24);
+      var cookies = __webpack_require__(22);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -886,7 +886,7 @@ module.exports = function xhrAdapter(config) {
 "use strict";
 
 
-var enhanceError = __webpack_require__(20);
+var enhanceError = __webpack_require__(18);
 
 /**
  * Create an Error with the specified message, config, error code, request and response.
@@ -1046,9 +1046,9 @@ module.exports = Cancel;
 
 
 var qs = __webpack_require__(11);
-var axios = __webpack_require__(14);
-var jsonp = __webpack_require__(31);
-var _ = __webpack_require__(32);
+var axios = __webpack_require__(12);
+var jsonp = __webpack_require__(29);
+var _ = __webpack_require__(30);
 var combineURLs = __webpack_require__(8);
 var buildURL = __webpack_require__(6);
 
@@ -1088,6 +1088,7 @@ var generalHandle = function generalHandle(data, res, resolve, reject, success, 
 var create = function create(defaultConfig) {
   var fetch = axios.create(defaultConfig);
   var io = { fetch: fetch };
+  io.interceptors = io.fetch.interceptors;
   ['get', 'delete', 'head', 'options', 'post', 'put', 'patch'].forEach(function (method) {
     io[method] = function (url, requestData, success, fail, config) {
       var configs = normalizeArgs(method, url, requestData, success, fail, config);
@@ -1178,201 +1179,63 @@ module.exports = io;
 "use strict";
 
 
-exports.decode = exports.parse = __webpack_require__(12);
-exports.encode = exports.stringify = __webpack_require__(13);
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+/* istanbul ignore next */
+var param = function param(a) {
+  var s = [],
+      rbracket = /\[\]$/,
+      isArray = function isArray(obj) {
+    return Object.prototype.toString.call(obj) === '[object Array]';
+  },
+      add = function add(k, v) {
+    v = typeof v === 'function' ? v() : v === null ? '' : v === undefined ? '' : v;
+    s[s.length] = encodeURIComponent(k) + '=' + encodeURIComponent(v);
+  },
+      buildParams = function buildParams(prefix, obj) {
+    var i, len, key;
+
+    if (prefix) {
+      if (isArray(obj)) {
+        for (i = 0, len = obj.length; i < len; i++) {
+          if (rbracket.test(prefix)) {
+            add(prefix, obj[i]);
+          } else {
+            buildParams(prefix + '[' + (_typeof(obj[i]) === 'object' ? i : '') + ']', obj[i]);
+          }
+        }
+      } else if (obj && String(obj) === '[object Object]') {
+        for (key in obj) {
+          buildParams(prefix + '[' + key + ']', obj[key]);
+        }
+      } else {
+        add(prefix, obj);
+      }
+    } else if (isArray(obj)) {
+      for (i = 0, len = obj.length; i < len; i++) {
+        add(obj[i].name, obj[i].value);
+      }
+    } else {
+      for (key in obj) {
+        buildParams(key, obj[key]);
+      }
+    }
+    return s;
+  };
+  return buildParams('', a).join('&').replace(/%20/g, '+');
+};
+module.exports = {
+  stringify: param
+};
 
 /***/ }),
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
-
-// If obj.hasOwnProperty has been overridden, then calling
-// obj.hasOwnProperty(prop) will break.
-// See: https://github.com/joyent/node/issues/1707
-function hasOwnProperty(obj, prop) {
-  return Object.prototype.hasOwnProperty.call(obj, prop);
-}
-
-module.exports = function(qs, sep, eq, options) {
-  sep = sep || '&';
-  eq = eq || '=';
-  var obj = {};
-
-  if (typeof qs !== 'string' || qs.length === 0) {
-    return obj;
-  }
-
-  var regexp = /\+/g;
-  qs = qs.split(sep);
-
-  var maxKeys = 1000;
-  if (options && typeof options.maxKeys === 'number') {
-    maxKeys = options.maxKeys;
-  }
-
-  var len = qs.length;
-  // maxKeys <= 0 means that we should not limit keys count
-  if (maxKeys > 0 && len > maxKeys) {
-    len = maxKeys;
-  }
-
-  for (var i = 0; i < len; ++i) {
-    var x = qs[i].replace(regexp, '%20'),
-        idx = x.indexOf(eq),
-        kstr, vstr, k, v;
-
-    if (idx >= 0) {
-      kstr = x.substr(0, idx);
-      vstr = x.substr(idx + 1);
-    } else {
-      kstr = x;
-      vstr = '';
-    }
-
-    k = decodeURIComponent(kstr);
-    v = decodeURIComponent(vstr);
-
-    if (!hasOwnProperty(obj, k)) {
-      obj[k] = v;
-    } else if (isArray(obj[k])) {
-      obj[k].push(v);
-    } else {
-      obj[k] = [obj[k], v];
-    }
-  }
-
-  return obj;
-};
-
-var isArray = Array.isArray || function (xs) {
-  return Object.prototype.toString.call(xs) === '[object Array]';
-};
-
+module.exports = __webpack_require__(13);
 
 /***/ }),
 /* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
-
-var stringifyPrimitive = function(v) {
-  switch (typeof v) {
-    case 'string':
-      return v;
-
-    case 'boolean':
-      return v ? 'true' : 'false';
-
-    case 'number':
-      return isFinite(v) ? v : '';
-
-    default:
-      return '';
-  }
-};
-
-module.exports = function(obj, sep, eq, name) {
-  sep = sep || '&';
-  eq = eq || '=';
-  if (obj === null) {
-    obj = undefined;
-  }
-
-  if (typeof obj === 'object') {
-    return map(objectKeys(obj), function(k) {
-      var ks = encodeURIComponent(stringifyPrimitive(k)) + eq;
-      if (isArray(obj[k])) {
-        return map(obj[k], function(v) {
-          return ks + encodeURIComponent(stringifyPrimitive(v));
-        }).join(sep);
-      } else {
-        return ks + encodeURIComponent(stringifyPrimitive(obj[k]));
-      }
-    }).join(sep);
-
-  }
-
-  if (!name) return '';
-  return encodeURIComponent(stringifyPrimitive(name)) + eq +
-         encodeURIComponent(stringifyPrimitive(obj));
-};
-
-var isArray = Array.isArray || function (xs) {
-  return Object.prototype.toString.call(xs) === '[object Array]';
-};
-
-function map (xs, f) {
-  if (xs.map) return xs.map(f);
-  var res = [];
-  for (var i = 0; i < xs.length; i++) {
-    res.push(f(xs[i], i));
-  }
-  return res;
-}
-
-var objectKeys = Object.keys || function (obj) {
-  var res = [];
-  for (var key in obj) {
-    if (Object.prototype.hasOwnProperty.call(obj, key)) res.push(key);
-  }
-  return res;
-};
-
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(15);
-
-/***/ }),
-/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1380,7 +1243,7 @@ module.exports = __webpack_require__(15);
 
 var utils = __webpack_require__(0);
 var bind = __webpack_require__(2);
-var Axios = __webpack_require__(17);
+var Axios = __webpack_require__(15);
 var defaults = __webpack_require__(1);
 
 /**
@@ -1415,14 +1278,14 @@ axios.create = function create(instanceConfig) {
 
 // Expose Cancel & CancelToken
 axios.Cancel = __webpack_require__(9);
-axios.CancelToken = __webpack_require__(29);
+axios.CancelToken = __webpack_require__(27);
 axios.isCancel = __webpack_require__(7);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(30);
+axios.spread = __webpack_require__(28);
 
 module.exports = axios;
 
@@ -1431,7 +1294,7 @@ module.exports.default = axios;
 
 
 /***/ }),
-/* 16 */
+/* 14 */
 /***/ (function(module, exports) {
 
 /*!
@@ -1458,7 +1321,7 @@ function isSlowBuffer (obj) {
 
 
 /***/ }),
-/* 17 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1466,9 +1329,9 @@ function isSlowBuffer (obj) {
 
 var defaults = __webpack_require__(1);
 var utils = __webpack_require__(0);
-var InterceptorManager = __webpack_require__(25);
-var dispatchRequest = __webpack_require__(26);
-var isAbsoluteURL = __webpack_require__(28);
+var InterceptorManager = __webpack_require__(23);
+var dispatchRequest = __webpack_require__(24);
+var isAbsoluteURL = __webpack_require__(26);
 var combineURLs = __webpack_require__(8);
 
 /**
@@ -1551,7 +1414,7 @@ module.exports = Axios;
 
 
 /***/ }),
-/* 18 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1570,7 +1433,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 
 /***/ }),
-/* 19 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1603,7 +1466,7 @@ module.exports = function settle(resolve, reject, response) {
 
 
 /***/ }),
-/* 20 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1631,7 +1494,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
 
 
 /***/ }),
-/* 21 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1675,7 +1538,7 @@ module.exports = function parseHeaders(headers) {
 
 
 /***/ }),
-/* 22 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1750,7 +1613,7 @@ module.exports = (
 
 
 /***/ }),
-/* 23 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1793,7 +1656,7 @@ module.exports = btoa;
 
 
 /***/ }),
-/* 24 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1853,7 +1716,7 @@ module.exports = (
 
 
 /***/ }),
-/* 25 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1912,14 +1775,14 @@ module.exports = InterceptorManager;
 
 
 /***/ }),
-/* 26 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(0);
-var transformData = __webpack_require__(27);
+var transformData = __webpack_require__(25);
 var isCancel = __webpack_require__(7);
 var defaults = __webpack_require__(1);
 
@@ -1998,7 +1861,7 @@ module.exports = function dispatchRequest(config) {
 
 
 /***/ }),
-/* 27 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2025,7 +1888,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 /***/ }),
-/* 28 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2046,7 +1909,7 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /***/ }),
-/* 29 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2110,7 +1973,7 @@ module.exports = CancelToken;
 
 
 /***/ }),
-/* 30 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2144,7 +2007,7 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 31 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2256,10 +2119,10 @@ function jsonp(url, opts, fn) {
 }
 
 /***/ }),
-/* 32 */
+/* 30 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_32__;
+module.exports = __WEBPACK_EXTERNAL_MODULE_30__;
 
 /***/ })
 /******/ ]);
