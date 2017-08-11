@@ -1,4 +1,4 @@
-const qs = require('querystring')
+const qs = require('./querystring')
 const axios = require('axios')
 const jsonp = require('./jsonp')
 const _ = require('lodash')
