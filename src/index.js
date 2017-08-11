@@ -1,4 +1,4 @@
-const qs = require('querystring')
+const qs = require('./querystring')
 const axios = require('axios')
 const jsonp = require('./jsonp')
 const _ = require('lodash')
@@ -41,6 +41,7 @@ const generalHandle = (data, res, resolve, reject, success, fail) => {
 const create = (defaultConfig) => {
   const fetch = axios.create(defaultConfig)
   const io = {fetch};
+  io.interceptors = io.fetch.interceptors;
   ['get', 'delete', 'head', 'options', 'post', 'put', 'patch'].forEach((method) => {
     io[method] = function (url, requestData, success, fail, config) {
       const configs = normalizeArgs(method, url, requestData, success, fail, config)
