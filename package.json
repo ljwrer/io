@@ -1,6 +1,6 @@
 {
   "name": "@fedor/io",
-  "version": "1.0.5",
+  "version": "1.0.1",
   "description": "generic io toolchain both for browser and node",
   "main": "dist/io.min.js",
   "author": "ljw <leijiawang@analysys.com.cn>",
@@ -40,7 +40,7 @@
   },
   "scripts": {
     "build":"webpack",
-    "publish": "concurrently \"npm run build\" \"npm publish\"",
+    "publish": "concurrently \"npm run build\"",
     "node-test": "concurrently \"node ./test/server/app\" \"mocha\"",
     "test": "concurrently \"node ./test/server/app\" \"karma start\"",
     "lint": "standard"
@@ -50,10 +50,17 @@
       "test"
     ]
   },
+  "files": [
+    "dist/"
+  ],
   "maintainers": [
     {
       "name": "public",
       "email": "rayjump@163.com"
+    },
+    {
+      "name": "allex",
+      "email": "allex.wxn@163.com"
     }
   ]
 }
