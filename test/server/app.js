@@ -86,6 +86,9 @@ gets.get('/jsonp/server/error/standard', function (req, res, next) {
     message: 'standard error message'
   })
 })
+gets.get('/code',function (req, res, next) {
+  createResponse(res, 'sven', '0')
+})
 app.use('/api', gets)
 posts.all('/hero', function (req, res, next) {
   createResponse(res, [
