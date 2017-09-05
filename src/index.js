@@ -29,7 +29,7 @@ const normalizeArgs = (method, url, data, success, fail, config) => {
 }
 
 const generalHandle = (data, res, resolve, reject, success, fail) => {
-  if (!data || +(data.code || 0) !== 0 ) {
+  if (!data || +(data.code || 0) !== 0) {
     fail && fail(data)
     reject(data)
   } else {
@@ -40,7 +40,7 @@ const generalHandle = (data, res, resolve, reject, success, fail) => {
 
 const create = (defaultConfig) => {
   const fetch = axios.create(defaultConfig)
-  const io = {fetch};
+  const io = {fetch}
   io.interceptors = io.fetch.interceptors;
   ['get', 'delete', 'head', 'options', 'post', 'put', 'patch'].forEach((method) => {
     io[method] = function (url, requestData, success, fail, config) {
