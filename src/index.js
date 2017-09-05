@@ -29,12 +29,12 @@ const normalizeArgs = (method, url, data, success, fail, config) => {
 }
 
 const generalHandle = (data, res, resolve, reject, success, fail) => {
-  if (!data.code) {
-    success && success(data)
-    resolve(data)
-  } else {
+  if (!data || +(data.code || 0) !== 0 ) {
     fail && fail(data)
     reject(data)
+  } else {
+    success && success(data)
+    resolve(data)
   }
 }
 
