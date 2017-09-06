@@ -1,17 +1,24 @@
+'use strict'
+
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const path = require('path')
-function generateConfig(name) {
-  var uglify = name.indexOf('min') > -1;
+
+function resolve(p) {
+  return path.resolve(__dirname, '..', p)
+}
+
+function generateConfig (name) {
+  var uglify = name.indexOf('min') > -1
   var config = {
     entry: './src/index',
     output: {
-      path: path.resolve(__dirname, 'dist'),
+      path: resolve('dist'),
       publicPath: '/dist/',
       filename: name + '.js',
       library: 'io',
       libraryTarget: 'umd',
       umdNamedDefine: true
-  },
+    },
     module: {
       rules: [
         {
@@ -21,12 +28,12 @@ function generateConfig(name) {
         }
       ]
     },
-    externals : {
-      lodash : {
-        commonjs2: "lodash",
-          commonjs: "lodash",
-          amd: "lodash",
-          root: "_" // indicates global variable
+    externals: {
+      lodash: {
+        commonjs2: 'lodash',
+        commonjs: 'lodash',
+        amd: 'lodash',
+        root: '_' // indicates global variable
       }
     },
     devtool: 'source-map',
@@ -41,13 +48,15 @@ function generateConfig(name) {
         },
         sourceMap: true
       })
-    );
+    )
   }
 
-  return config;
+  return config
 }
 var config = ['io', 'io.min'].map(function (key) {
-  return generateConfig(key);
-});
+  return generateConfig(key)
+})
+
 console.log(config)
+
 module.exports = config

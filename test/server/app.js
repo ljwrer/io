@@ -120,7 +120,7 @@ formApp.use('/api', posts)
 jsonApp.use('/api', posts)
 
 module.exports = {
-  start() {
+  start () {
     app.listen(3000, function () {
       console.log('listen 3000')
     })

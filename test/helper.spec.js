@@ -5,6 +5,6 @@ describe('#helper', function () {
   it('should throw error is invoke', function () {
     assert.throws(function () {
       helper.fulfilled()
-    },Error)
+    }, Error)
   })
 })

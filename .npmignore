@@ -7,6 +7,8 @@
 .npmignore
 .editorconfig
 .eslintrc*
+.stylelintrc
+.build/
 t.*
 [a-z0-9].*
 *.log
@@ -19,3 +21,4 @@ test
 coverage
 karma.conf.js
 webpack.config.js
+src

@@ -1,12 +1,16 @@
 // Karma configuration
 // Generated on Fri Jul 14 2017 14:13:38 GMT+0800 (中国标准时间)
 const path = require('path')
+
+require('../test/server/init')
+
 console.log(process.env.NODE_ENV)
+
 module.exports = function (config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '',
+    basePath: path.resolve(__dirname, '../'),
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
@@ -27,7 +31,11 @@ module.exports = function (config) {
     ],
 
     // list of files to exclude
-    exclude: [],
+    exclude: [
+      'test/server/*',
+      'test/hooks-*',
+      'node_modules/*'
+    ],
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
@@ -58,7 +66,7 @@ module.exports = function (config) {
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false,
+    singleRun: true,
 
     // Concurrency level
     // how many browser should be started simultaneous
@@ -79,7 +87,7 @@ module.exports = function (config) {
               options: {esModules: true}
             },
             enforce: 'post',
-            exclude: /node_modules|\.spec\.js$/
+            exclude: /node_modules|test|\.spec\.js$/
           }
         ]
       },

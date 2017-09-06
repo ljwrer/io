@@ -52,7 +52,6 @@ describe('#jsonp()', function () {
       .then(fulfilled, function (err) {
         assert.deepEqual(err, {code: 500, message: 'http error', data: null})
         sinon.assert.notCalled(fail)
-
       })
   })
 })
