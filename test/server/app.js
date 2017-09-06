@@ -86,7 +86,7 @@ gets.get('/jsonp/server/error/standard', function (req, res, next) {
     message: 'standard error message'
   })
 })
-gets.get('/code',function (req, res, next) {
+gets.get('/code', function (req, res, next) {
   createResponse(res, 'sven', '0')
 })
 app.use('/api', gets)
@@ -118,12 +118,17 @@ posts.all('/server/error/standard', function (req, res, next) {
 })
 formApp.use('/api', posts)
 jsonApp.use('/api', posts)
-app.listen(3000, function () {
-  console.log('listen 3000')
-})
-formApp.listen(3001, function () {
-  console.log('listen 3001')
-})
-jsonApp.listen(3002, function () {
-  console.log('listen 3002')
-})
+
+module.exports = {
+  start() {
+    app.listen(3000, function () {
+      console.log('listen 3000')
+    })
+    formApp.listen(3001, function () {
+      console.log('listen 3001')
+    })
+    jsonApp.listen(3002, function () {
+      console.log('listen 3002')
+    })
+  }
+}

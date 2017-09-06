@@ -24,6 +24,7 @@
     "chai": "^4.1.1",
     "concurrently": "^3.5.0",
     "cors": "^2.8.4",
+    "express": "^4.15.4",
     "istanbul-instrumenter-loader": "^3.0.0",
     "karma": "^1.7.0",
     "karma-chrome-launcher": "^2.2.0",
@@ -39,10 +40,10 @@
     "webpack": "^3.5.1"
   },
   "scripts": {
-    "build":"webpack",
-    "publish": "concurrently \"npm run build\"",
-    "node-test": "concurrently \"node ./test/server/app\" \"mocha\"",
-    "test": "concurrently \"node ./test/server/app\" \"karma start\"",
+    "build": "webpack",
+    "publish": "npm run build",
+    "node-test": "mocha",
+    "test": "concurrently \"node ./test/server/init\" \"karma start\"",
     "lint": "standard"
   },
   "standard": {
