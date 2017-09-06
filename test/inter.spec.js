@@ -13,22 +13,20 @@ describe('#interceptors', function () {
       return Promise.reject(error)
     })
   })
-  it('should trigger interceptors when success', function (done) {
+  it('should trigger interceptors when success', function () {
     io.interceptors.request.use(req, errorHandle)
     io.interceptors.response.use(res, errorHandle)
-    io.get('/hero', success, fail).then(function () {
+    return io.get('/hero', success, fail).then(function () {
       sinon.assert.calledOnce(req)
       sinon.assert.calledOnce(res)
-      done()
     })
   })
-  it('should trigger interceptors when error', function (done) {
+  it('should trigger interceptors when error', function () {
     io.interceptors.request.use(req, errorHandle)
     io.interceptors.response.use(res, errorHandle)
-    io.get('/server/error/standard', success, fail).catch(function () {
+    return io.get('/server/error/standard', success, fail).catch(function () {
       sinon.assert.calledOnce(req)
       sinon.assert.calledOnce(errorHandle)
-      done()
     })
   })
 })
