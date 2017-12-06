@@ -118,4 +118,4 @@ set default config in all instance
 io.config.emulateJSON = false
 ```
 
-for more detail see <http://git.analysys.cn/npm/io/tree/master/test>
+for more detail see <https://github.com/ljwrer/io/tree/master/test>
