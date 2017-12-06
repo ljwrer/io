@@ -2,13 +2,7 @@
 
 Promise based HTTP client for the browser and node.js wrapper axios and add jsonp support
 
-## Installing
-
-Using npm:
-
-```bash
-$ npm install @fedor/io
-```
+this repo is adaptor for `analysys` standard RESTful api and add config to fallback by modify request data format and content-type if trigger cors preflight while sever not supported
 
 ## Test
 ```bash
